@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 import numpy as np
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(__name__ , static_url_path='/static')
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/noahuddin'
 db = SQLAlchemy(app)
@@ -40,33 +40,42 @@ def register():
             db.session.add(user)
             db.session.commit()
             flash('Your account has been created!', 'success')
-            return redirect(url_for('wines'))
+            return redirect(url_for('home'))
+        elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
+            flash('Welcome Back gamle dreng', 'success')
+            return redirect(url_for('home'))
         else:
-            flash('Username already exists. Please choose a different one.', 'danger')
+            flash('Username username or password doesnt exist', 'danger')
         return redirect(url_for('register'))
     return render_template('register.html')
 
 @app.route("/home")
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route("/wines")
 def wines():
     wines = Wine.query.all()
     return render_template('wines.html', wines=wines)
 
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        search_string = request.form['search']
+        search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
+        return render_template('search_results.html', wines=search_results)
+    return render_template('search.html')
+
 # Load CSV data into the database
 def load_wine_data():
     if not Wine.query.first():
         df = pd.read_csv('winetest.csv')
         df.columns = ['index', 'country', 'description', 'designation', 'points', 'price', 'province', 'region_1', 'region_2', 'variety', 'winery']
-        print("CSV Columns:", df.columns)  # Debug: Print column names
-        print("CSV Data Sample:", df.head())  # Debug: Print first few rows
 
-        # Clean the data
+        
         df['points'] = pd.to_numeric(df['points'], errors='coerce')
         df['price'] = pd.to_numeric(df['price'], errors='coerce')
-        df = df.replace({np.nan: None})  # Replace NaN with None
+        df = df.replace({np.nan: None}) 
 
         for _, row in df.iterrows():
             wine = Wine(
