@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wines</title>
+</head>
+<body>
+    <h1>Wine List</h1>
+    <ul>
+        {% for wine in wines %}
+            <li>{{ wine['name'] }}: {{ wine['description'] }}: {{wine['points']}} : {{wine['price']}}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
