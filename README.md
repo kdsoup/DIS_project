@@ -12,16 +12,6 @@ conda activate winey
 pip install -r Winey/src/requirements.txt
 ```
 
-# Setup Database
-
-Go to the folder ```./Winey/src``` and type the commands:
-
-```bash
-flask db init
-flask db migrate -m "Initial migration."
-flask db upgrade
-```
-
 # Setup app.py
 
 To connect correctly to the database, please add your local port number and Postgres server name to line 13. 
@@ -35,6 +25,18 @@ to the follwing:
 
 ```python
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/winey'
+```
+
+# Setup Database
+
+In PGAdmin make a new database with the name ```winey```. 
+
+In the terminal, go to the folder ```./Winey/src``` and type the commands:
+
+```bash
+flask db init
+flask db migrate -m "Initial migration."
+flask db upgrade
 ```
 
 # Run App
