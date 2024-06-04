@@ -9,7 +9,7 @@
     <h1>Wine List</h1>
     <ul>
         {% for wine in wines %}
-            <li>{{ wine['name'] }}: {{ wine['description'] }}: {{wine['points']}} : {{wine['price']}}</li>
+            <li>{{ wine['name'] }}: {{ wine['description'] }}: {{wine['points']}} : {{wine['price']}} : {{wine['province']}}</li>
         {% endfor %}
     </ul>
 </body>

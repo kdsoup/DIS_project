@@ -16,8 +16,11 @@
 <div class="search-box">
   <form action="{{ url_for('search') }}" method="post">
     <input type="text" name="search" placeholder="Search for wines...">
-    <input type="submit" value="Search">
+    <input type="submit" value="Search"><br>
+    <label class="">Description<input type="radio" id="description" name="option" value="description" required/>
+    <label class="">Province<input type="radio" id="province" name="option" value="province" />
   </form>
+  
 </div>
 
 </body>
