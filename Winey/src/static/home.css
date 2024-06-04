@@ -63,3 +63,9 @@ body {
     }
   }
   
+  .search-box {
+    margin: 0 auto; /* Horizontally center */
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+}
