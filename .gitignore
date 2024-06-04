@@ -1,0 +1,3 @@
+*.DS_Store
+Winey/src/__pycache__
+Winey/src/migrations
