@@ -56,7 +56,16 @@ def register():
 
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    wines = Wine.query.all()
+    if request.method == 'POST':
+        with db.engine.connect() as conn:
+          search_re = request.form['search']
+          search_option = request.form['option']
+          print(search_option)
+          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insensitive sql regex query
+          search_results = conn.execute(sql)
+        return render_template('home.html', wines=search_results)
+    return render_template('home.html', wines=wines)
 
 @app.route("/wines")
 def wines():
@@ -74,7 +83,7 @@ def search():
           search_re = request.form['search']
           search_option = request.form['option']
           print(search_option)
-          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insentive sql regex query
+          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insensitive sql regex query
           search_results = conn.execute(sql)
         return render_template('search_results.html', wines=search_results)
     return render_template('search.html')

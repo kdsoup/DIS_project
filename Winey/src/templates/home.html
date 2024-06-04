@@ -14,13 +14,20 @@
 <p>Welcome to a world of wine</p>
 
 <div class="search-box">
-  <form action="{{ url_for('search') }}" method="post">
+  <form action="\search" method="post">
     <input type="text" name="search" placeholder="Search for wines...">
     <input type="submit" value="Search"><br>
     <label class="">Description<input type="radio" id="description" name="option" value="description" required/>
     <label class="">Province<input type="radio" id="province" name="option" value="province" />
   </form>
-  
+</div>
+
+<div class="wines">
+  <ul>
+    {% for wine in wines %}
+        <li>{{ wine['name'] }}: {{ wine['description'] }}: {{wine['points']}} : {{wine['price']}} :  {{wine['province']}}</li>
+    {% endfor %}
+  </ul>
 </div>
 
 </body>
