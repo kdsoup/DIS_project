@@ -6,7 +6,11 @@ import pandas as pd
 
 app = Flask(__name__ , static_url_path='/static')
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5433/noahuddin'
+
+# Please set localhost address and server name below
+# 'postgresql://postgres@localhost:XXXX/XXXX'
+# e.g 'postgresql://postgres@localhost:5432/winey'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
