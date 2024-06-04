@@ -72,7 +72,9 @@ def search():
 
         with db.engine.connect() as conn:
           search_re = request.form['search']
-          sql = text(f'''select * from wine where description ~* '{search_re}' ''') # case-insentive sql regex query
+          search_option = request.form['option']
+          print(search_option)
+          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insentive sql regex query
           search_results = conn.execute(sql)
         return render_template('search_results.html', wines=search_results)
     return render_template('search.html')
