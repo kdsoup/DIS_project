@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import numpy as np
 import pandas as pd
+from sqlalchemy import text
 
 app = Flask(__name__ , static_url_path='/static')
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -10,7 +11,7 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 # Please set localhost address and server name below
 # 'postgresql://postgres@localhost:XXXX/XXXX'
 # e.g 'postgresql://postgres@localhost:5432/winey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/winey'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -65,8 +66,14 @@ def wines():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        search_string = request.form['search']
-        search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
+        # search_string = request.form['search']
+        # search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
+        # return render_template('search_results.html', wines=search_results)
+
+        with db.engine.connect() as conn:
+          search_re = request.form['search']
+          sql = text(f'''select * from wine where description ~* '{search_re}' ''') # case-insentive sql regex query
+          search_results = conn.execute(sql)
         return render_template('search_results.html', wines=search_results)
     return render_template('search.html')
 
