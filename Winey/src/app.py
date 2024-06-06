@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
 from flask_migrate import Migrate
 import numpy as np
 import pandas as pd
@@ -35,19 +36,38 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not User.query.filter_by(username=username).first():
-            user = User(username=username, password=password)
-            db.session.add(user)
+
+        #Check if user already exists in DataBase
+        user_check_query = text('select * from "user" where "username" = :username')
+        # Fetchone returns either a single row or None if no rows exist
+        user_check = db.session.execute(user_check_query, {'username': username}).fetchone()
+        #check specific users password
+        password_check_query = text('select * from "user" where "username" = :username and "password" = :password')
+        password_check = db.session.execute(password_check_query, {'username': username, 'password': password}).fetchone()
+        if user_check == None:
+            user_insert_query = text('insert into "user" ("username", "password") values (:username, :password)')
+            db.session.execute(user_insert_query, {'username': username, 'password': password})
             db.session.commit()
-            flash('Your account has been created!', 'success')
+            flash('acc created', ' success')
             return redirect(url_for('home'))
-        elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
-            flash('Welcome Back gamle dreng', 'success')
+        elif user_check != None and password_check != None:
+            flash('Welcome back', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Username username or password doesnt exist', 'danger')
-        return redirect(url_for('register'))
+            flash('username or password is incorrect', 'danger')
     return render_template('register.html')
+    #     if not User.query.filter_by(username=username).first():
+    #         user = User(username=username, password=password)
+    #         db.session.add(user)
+    #         db.session.commit()
+    #         flash('Your account has been created!', 'success')
+    #         return redirect(url_for('home'))
+    #     elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
+    #         return redirect(url_for('home'))
+    #     else:
+    #         flash('Username username or password doesnt exist', 'danger')
+    #     return redirect(url_for('register'))
+    # return render_template('register.html')
 
 @app.route("/home")
 def home():
@@ -65,7 +85,9 @@ def search():
         search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
         return render_template('search_results.html', wines=search_results)
     return render_template('search.html')
-
+@app.route("/contact")
+def contact():
+    return render_template('contact.html')
 # Load CSV data into the database
 def load_wine_data():
     if not Wine.query.first():

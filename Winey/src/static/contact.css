@@ -1,0 +1,26 @@
+/* Path: Winey/src/static/contact.css */
+
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+.contact {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.contact-box {
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    width: 30%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-box p {
+    margin: 0;
+    padding: 0;
+}

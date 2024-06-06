@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(236, 236, 236);
+    background-color: rgba(161, 62, 62, 0.198);
   }
   h1 {
     text-align: center;
@@ -7,7 +7,7 @@ body {
   }
   p {
     text-align: center;
-    color: red;
+    color: rgb(0, 0, 0);
   }
   /* Add a black background color to the top navigation bar */
 .topnav {
@@ -15,6 +15,13 @@ body {
     background-color: #e9e9e9;
   }
   
+
+  .example-class {
+    background-image: url('../images/example.jpg');
+    /* Add any additional styling as needed */
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+}
   /* Style the links inside the navigation bar */
   .topnav a {
     float: left;
