@@ -12,9 +12,11 @@ conda activate winey
 pip install -r requirements.txt
 ```
 
-# Setup app.py
+# Setup Database
 
-To connect correctly to the database, please add your local port number and Postgres server name to line 13. 
+1) Start Postgres server and make a new database with the name ```winey```. 
+
+2) To connect correctly to the database, please add your local port number and Postgres server name to line 13. 
 For example if your port is 5432 and servername is 'winey' then edit
 
 ```python
@@ -27,11 +29,7 @@ to the follwing:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/winey'
 ```
 
-# Setup Database
-
-In PGAdmin make a new database with the name ```winey```. 
-
-In the terminal, go to the folder ```./Winey/src``` and type the commands:
+3) In the terminal, go to the folder ```./Winey/src``` and type the commands:
 
 ```bash
 flask db init
