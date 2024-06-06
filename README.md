@@ -9,7 +9,7 @@ To install the package requirements for the Winey app in a miniconda enviroment,
 ```bash
 conda create -y -n "winey" python=3.12
 conda activate winey
-pip install -r Winey/src/requirements.txt
+pip install -r requirements.txt
 ```
 
 # Setup app.py
