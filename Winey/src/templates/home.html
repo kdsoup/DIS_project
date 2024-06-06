@@ -12,38 +12,43 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><img src="wine.svg" alt="wine SVG" width="30" height="20"> Winey
+      <a class="navbar-brand" href="#"><img src ="/static/images/wine.svg" alt="wine SVG" width="30" height="20"> Winey</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="home.html">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="search.html">Search</a>
-            <a class="nav-item nav-link" href="login.html">Login</a>
+            <a class="nav-item nav-link active" href="/home">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/search">Search</a>
+            <a class="nav-item nav-link" href="/">Login</a>
           </div>
         </div>
       </nav>
       <!-- <h1 class="display-5 fw-bold text-body-emphasis">Welcome to Winey</h1> -->
       <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="wine.svg" alt="" width="72" height="57">
+        <img class="d-block mx-auto mb-4" src ="/static/images/wine.svg" alt="" width="72" height="57">
         <h1 class="display-5 fw-bold text-body-emphasis">Winey</h1>
         <div class="col-lg-6 mx-auto">
           <p class="lead mb-4">Welcome to a world of wine</p>
-          <!-- <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary button</button>
-            <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
-          </div> -->
+          <form action="\search" method="post">
+            <input type="text" name="search" placeholder="Search for wines...">
+            <input type="submit" value="Search"><br>
+            <label class="">Description<input type="radio" id="description" name="option" value="description" required/>
+            <label class="">Province<input type="radio" id="province" name="option" value="province" />
+          </form>
         </div>
       </div>
-      <div class="search-box">
+  
+      <!-- <div class="navbar navbar-light bg-light">
+        <div class="container-fluid">
         <form action="\search" method="post">
           <input type="text" name="search" placeholder="Search for wines...">
           <input type="submit" value="Search"><br>
           <label class="">Description<input type="radio" id="description" name="option" value="description" required/>
           <label class="">Province<input type="radio" id="province" name="option" value="province" />
         </form>
-      </div>
+        </div>
+      </div> -->
       
       <div class="wines">
         <ul>
