@@ -1,19 +1,25 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 import numpy as np
 import pandas as pd
+import psycopg2
 
 app = Flask(__name__ , static_url_path='/static')
-app.config['SECRET_KEY'] = 'your_secret_key'
+db = "dbname='postgres' user='postgres' host='127.0.0.1' password = '  '"
+conn = psycopg2.connect(db)
+cursor = conn.cursor()
+# app.config['SECRET_KEY'] = 'your_secret_key'
 
 # Please set localhost address and server name below
 # 'postgresql://postgres@localhost:XXXX/XXXX'
 # e.g 'postgresql://postgres@localhost:5432/winey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/wineyDB'
+db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
+bcrypt = Bcrypt(app)
 # Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,22 +42,40 @@ class Wine(db.Model):
 # Routes
 @app.route("/", methods=['GET', 'POST'])
 def register():
+    cur = conn.cursor()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not User.query.filter_by(username=username).first():
-            user = User(username=username, password=password)
-            db.session.add(user)
-            db.session.commit()
+
+        cur.execute(f'''select * from users where username = '{username}' ''')
+        existing_user = cur.fetchone()
+        if existing_user:
+            if existing_user[2] == password:  # Assuming password is at index 2 in the tuple
+                flash('Welcome Back gamle dreng', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid password', 'danger')
+        else:
+            cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, password))
+            conn.commit()
             flash('Your account has been created!', 'success')
             return redirect(url_for('home'))
-        elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
-            flash('Welcome Back gamle dreng', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Username username or password doesnt exist', 'danger')
-        return redirect(url_for('register'))
-    return render_template('register.html')
+        return render_template('register.html')
+        # if not User.query.filter_by(username=username).first():
+        #     db.engine.execute("INSERT INTO user (username, password) VALUES (:username, :password)", 
+        #                       {'username': username, 'password': password})    
+        #     # user = User(username=username, password=password)
+        #     # db.session.add(user)
+        #     # db.session.commit()
+        #     flash('Your account has been created!', 'success')
+        #     return redirect(url_for('home'))
+        # elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
+        #     flash('Welcome Back gamle dreng', 'success')
+        #     return redirect(url_for('home'))
+        # else:
+        #     flash('Username username or password doesnt exist', 'danger')
+        # return redirect(url_for('register'))
+    
 
 @app.route("/home")
 def home():

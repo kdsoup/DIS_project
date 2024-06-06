@@ -1,4 +1,5 @@
-CREATE TABLE "User" (
+DROP TABLE IF EXISTS "User";
+CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     username VARCHAR(20) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL
