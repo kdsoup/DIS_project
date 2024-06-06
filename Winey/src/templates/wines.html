@@ -8,7 +8,7 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><img src ="/static/images/wine.svg" alt="wine SVG" width="30" height="20"> Winey</a>
+    <a class="navbar-brand" href="/home"><img src ="/static/images/wine.svg" alt="wine SVG" width="30" height="20"> Winey</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -17,11 +17,10 @@
           <a class="nav-item nav-link active" href="/home">Home <span class="sr-only">(current)</span></a>
           <a class="nav-item nav-link" href="/">Login</a>
           <a class="nav-item nav-link" href="/wines">All Wines</a>
-          <a class="nav-item nav-link" href="/home">Contact</a>
         </div>
       </div>
     </nav>
-    <h2 class="display-5 fw-bold text-body-emphasis">Wine List</h2>
+    <h2 class="display-5 fw-bold text-body-emphasis">All Wine List</h2>
     <div class="container mt-4">
         <div class="row">
             {% for wine in wines %}
@@ -29,12 +28,12 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">{{ wine['winery'] }}</h5>
-                            <p class="card-text">Description: {{ wine['description'] }}</p>
-                            <p class="card-text">Points: {{ wine['points'] }}</p>
-                            <p class="card-text">Country: {{ wine['country'] }}</p>
-                            <p class="card-text">Variety: {{ wine['variety'] }}</p>
-                            <p class="card-text">Province: {{ wine['province'] }}</p>
-                            <p class="card-text">Price: {{ wine['price'] }}</p>
+                            <p class="card-text">{{ wine['description'] }}</p>
+                            <p class="card-text">💗 Points: {{ wine['points'] }}</p>
+                            <p class="card-text">🌎 Country: {{ wine['country'] }}</p>
+                            <p class="card-text">🎉 Variety: {{ wine['variety'] }}</p>
+                            <p class="card-text">🔥 Province: {{ wine['province'] }}</p>
+                            <p class="card-text">💰 Price: {{ wine['price'] }}</p>
                         </div>
                     </div>
                 </div>
