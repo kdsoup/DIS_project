@@ -60,18 +60,6 @@ def register():
         else:
             flash('username or password is incorrect', 'danger')
     return render_template('register.html')
-    #     if not User.query.filter_by(username=username).first():
-    #         user = User(username=username, password=password)
-    #         db.session.add(user)
-    #         db.session.commit()
-    #         flash('Your account has been created!', 'success')
-    #         return redirect(url_for('home'))
-    #     elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
-    #         return redirect(url_for('home'))
-    #     else:
-    #         flash('Username username or password doesnt exist', 'danger')
-    #     return redirect(url_for('register'))
-    # return render_template('register.html')
 
 @app.route("/home")
 def home():
@@ -94,10 +82,6 @@ def wines():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        # search_string = request.form['search']
-        # search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
-        # return render_template('search_results.html', wines=search_results)
-
         with db.engine.connect() as conn:
           search_re = request.form['search']
           search_option = request.form['option']
