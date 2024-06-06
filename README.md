@@ -1,6 +1,18 @@
-# DIS_project
+# Winey
 
-This is the application for Winey project.
+This is the application called *Winey* for the DIS project. 
+We have used a small sample of the [Wine Reviews](https://www.kaggle.com/datasets/zynicide/wine-reviews) dataset on Kaggle.
+
+Users of Winey can signup and login to the Winey app and seach for wines using the wine descriptions or province names.
+
+## Documentation
+How to compile and run the project can be found below in this ```README``` file.
+
+The E/R diagram can be found in the folder ```diagram```.
+## Webapp
+Our webapp interracts with the database using SQL in line 45, 49 and 52 in the ```app.py``` file.
+
+Regular expression is use in the search function on line 67-75 in the ```app.py``` file.
 
 # Install Requirements
 
@@ -16,8 +28,8 @@ pip install -r requirements.txt
 
 1) Start Postgres server and make a new database with the name ```winey```. 
 
-2) To connect correctly to the database, please add your local port number and Postgres server name to line 13. 
-For example if your port is 5432 and servername is 'winey' then edit
+2) To connect correctly to the database, please add your local port and database name to line 14. 
+For example if your port is 5432 and database name is 'winey' then edit
 
 ```python
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
@@ -29,7 +41,7 @@ to the follwing:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/winey'
 ```
 
-3) In the terminal, go to the folder ```./Winey/src``` and type the commands:
+3) In the terminal, go to the folder ```/Winey/src``` and type the commands:
 
 ```bash
 flask db init
@@ -45,12 +57,4 @@ To run the app (in the miniconda env) use the command:
 python3 Winey/src/app.py
 ```
 
-# Deliverable requirements
-## Documentation
-How to compile and run the project can be found above in this README file.
 
-The E/R diagram can be found in the folder diagram.
-## Webapp
-Our webapp interracts with the database using SQL in line 45, 49 and 52 in the app.py file.
-
-Regular expression is use in the search function on line 76-87 and 96-108 in the app.py file.

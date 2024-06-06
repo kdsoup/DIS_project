@@ -8,7 +8,7 @@ from sqlalchemy import text
 app = Flask(__name__ , static_url_path='/static')
 app.config['SECRET_KEY'] = 'your_secret_key'
 
-# Please set localhost address and server name below
+# Please set port address and database name below
 # 'postgresql://postgres@localhost:XXXX/XXXX'
 # e.g 'postgresql://postgres@localhost:5432/winey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
