@@ -46,3 +46,13 @@ To run the app (in the miniconda env) use the command:
 ```bash
 python3 Winey/src/app.py
 ```
+
+# Deliverable requirements
+## Documentation
+How to compile and run the project can be found above in this README file.
+
+The E/R diagram can be found in the folder diagram.
+## Webapp
+Our webapp interracts with the database using SQL in line 45, 49 and 52 in the app.py file.
+
+Regular expression is use in the search function on line 76-87 and 96-108 in the app.py file.
