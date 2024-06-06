@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import numpy as np
 import pandas as pd
+from sqlalchemy import text
 
 app = Flask(__name__ , static_url_path='/static')
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -10,7 +11,7 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 # Please set localhost address and server name below
 # 'postgresql://postgres@localhost:XXXX/XXXX'
 # e.g 'postgresql://postgres@localhost:5432/winey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:XXXX/XXXX'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/winey'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -39,23 +40,51 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not User.query.filter_by(username=username).first():
-            user = User(username=username, password=password)
-            db.session.add(user)
+
+        #Check if user already exists in DataBase
+        user_check_query = text('select * from "user" where "username" = :username')
+        # Fetchone returns either a single row or None if no rows exist
+        user_check = db.session.execute(user_check_query, {'username': username}).fetchone()
+        #check specific users password
+        password_check_query = text('select * from "user" where "username" = :username and "password" = :password')
+        password_check = db.session.execute(password_check_query, {'username': username, 'password': password}).fetchone()
+        if user_check == None:
+            user_insert_query = text('insert into "user" ("username", "password") values (:username, :password)')
+            db.session.execute(user_insert_query, {'username': username, 'password': password})
             db.session.commit()
-            flash('Your account has been created!', 'success')
+            flash('acc created', ' success')
             return redirect(url_for('home'))
-        elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
-            flash('Welcome Back gamle dreng', 'success')
+        elif user_check != None and password_check != None:
+            flash('Welcome back', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Username username or password doesnt exist', 'danger')
-        return redirect(url_for('register'))
+            flash('username or password is incorrect', 'danger')
     return render_template('register.html')
+    #     if not User.query.filter_by(username=username).first():
+    #         user = User(username=username, password=password)
+    #         db.session.add(user)
+    #         db.session.commit()
+    #         flash('Your account has been created!', 'success')
+    #         return redirect(url_for('home'))
+    #     elif User.query.filter_by(username=username).first() and User.query.filter_by(password=password).first():
+    #         return redirect(url_for('home'))
+    #     else:
+    #         flash('Username username or password doesnt exist', 'danger')
+    #     return redirect(url_for('register'))
+    # return render_template('register.html')
 
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    wines = Wine.query.all()
+    if request.method == 'POST':
+        with db.engine.connect() as conn:
+          search_re = request.form['search']
+          search_option = request.form['option']
+          print(search_option)
+          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insensitive sql regex query
+          search_results = conn.execute(sql)
+        return render_template('home.html', wines=search_results)
+    return render_template('home.html', wines=wines)
 
 @app.route("/wines")
 def wines():
@@ -65,8 +94,16 @@ def wines():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        search_string = request.form['search']
-        search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
+        # search_string = request.form['search']
+        # search_results = Wine.query.filter(Wine.description.like(f'%{search_string}%')).all()
+        # return render_template('search_results.html', wines=search_results)
+
+        with db.engine.connect() as conn:
+          search_re = request.form['search']
+          search_option = request.form['option']
+          print(search_option)
+          sql = text(f"select * from wine where {search_option} ~* '{search_re}' ") # case-insensitive sql regex query
+          search_results = conn.execute(sql)
         return render_template('search_results.html', wines=search_results)
     return render_template('search.html')
 

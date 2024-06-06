@@ -47,6 +47,13 @@ body {
     margin-right: 16px;
     font-size: 17px;
   }
+
+  .search-box {
+    margin: 0 auto; /* Horizontally center */
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+  }
   
   /* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
   @media screen and (max-width: 600px) {
@@ -61,5 +68,6 @@ body {
     .topnav input[type=text] {
       border: 1px solid #ccc;
     }
+    
   }
   
