@@ -110,7 +110,7 @@ def search():
 # Load CSV data into the database
 def load_wine_data():
     if not Wine.query.first():
-        df = pd.read_csv('winetest.csv')
+        df = pd.read_csv('winedata_50.csv')
         df.columns = ['index', 'country', 'description', 'designation', 'points', 'price', 'province', 'region_1', 'region_2', 'variety', 'winery']
 
         
